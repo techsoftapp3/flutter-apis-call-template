@@ -2,10 +2,16 @@ import 'package:api_tools_test/injectable.dart';
 import 'package:api_tools_test/model/data/remote/dio/dio_remote.dart';
 import 'package:api_tools_test/model/models/post_model.dart';
 import 'package:api_tools_test/model/services/retrofit_services.dart';
+import 'package:api_tools_test/page_config.dart';
+import 'package:api_tools_test/view_model/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 Future<void> main() async {
-  configureDependencies();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await configureDependencies();
   runApp(const MyApp());
 }
 
@@ -15,40 +21,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: PageName.homeScreen,
+      getPages: PageConfig.getPages,
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePage extends GetView<MyController> {
+  const MyHomePage({super.key});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Home page"),
       ),
       body: Center(
         child: Column(
@@ -90,9 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
               onPressed: () async {
-                final instance = getIt<PostRemote>();
-                final response = await instance.getPostById(2);
-                print(response.toJson());
+                controller.getPostById(1);
               },
               child: Text(
                 'Get',
@@ -100,78 +90,50 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final instance = getIt<PostRemote>();
-                final response = await instance.getPosts();
-                for (final element in response) {
-                  print("\n");
-                  print(element.toJson());
-                }
-              },
+              onPressed: () async => controller.getPosts(),
               child: Text(
                 'GetList',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final instance = getIt<PostRemote>();
-                await instance
-                    .addPost(PostModel.fromJson(
-                      <String, dynamic>{
-                        "title": 'foo',
-                        "body": 'bar',
-                        "userId": 1,
-                      },
-                    ))
-                    .then((value) => print(value.toJson()));
-              },
+              onPressed: () async => controller.addPost(PostModel.fromJson(
+                <String, dynamic>{
+                  "title": 'foo',
+                  "body": 'bar',
+                  "userId": 1,
+                },
+              )),
               child: Text(
                 'Post',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final instance = getIt<PostRemote>();
-                await instance
-                    .updatePost(
-                        PostModel.fromJson(
-                          <String, dynamic>{
-                            "id": 2,
-                            "title": 'Cabv',
-                            "body": "dadasdasdasd",
-                            "userId": 2,
-                          },
-                        ),
-                        1)
-                    .then((value) => print(value.toJson()));
-              },
+              onPressed: () async => controller.updatePost(
+                  post: PostModel.fromJson(
+                    <String, dynamic>{
+                      "id": 2,
+                      "title": 'Cabv',
+                      "body": "dadasdasdasd",
+                      "userId": 2,
+                    },
+                  ),
+                  index: 1),
               child: Text(
                 'Put',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final instance = getIt<PostRemote>();
-                await instance
-                    .deletePost(2)
-                    .then((value) => print(value.toJson()));
-              },
+              onPressed: () async => controller.deletePost(2),
               child: Text(
                 'Delete',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
             TextButton(
-              onPressed: () async {
-                final instance = getIt<PostRemote>();
-                final value = await instance.filterByUserId(2);
-                value.forEach((element) {
-                  print(element.toJson());
-                });
-              },
+              onPressed: () async => controller.filterPostsById(2),
               child: Text(
                 'Filter',
                 style: Theme.of(context).textTheme.headline4,

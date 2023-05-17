@@ -9,11 +9,13 @@ import 'package:dio/dio.dart' as _i3;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'model/data/remote/dio/dio_remote.dart' as _i6;
-import 'model/data_module.dart' as _i7;
+import 'model/data/remote/dio/dio_remote.dart' as _i7;
+import 'model/data/repository/retrofit_repository.dart' as _i6;
+import 'model/data_module.dart' as _i9;
 import 'model/services/dio_services.dart' as _i4;
-import 'model/services/retrofit_services.dart'
-    as _i5; // ignore_for_file: unnecessary_lambdas
+import 'model/services/retrofit_services.dart' as _i5;
+import 'view_model/controller.dart'
+    as _i8; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -76,19 +78,23 @@ _i1.GetIt $initGetIt(
   );
   gh.factory<_i5.ExampleModel1Remote>(() => _i5.ExampleModel1Remote(
         get<_i3.Dio>(instanceName: 'dio_retrofit_1'),
-        baseURL: get<String>(),
+        baseURL: get<String>(instanceName: 'concungBaseURL2'),
       ));
   gh.factory<_i5.ExampleModel2Remote>(() => _i5.ExampleModel2Remote(
         get<_i3.Dio>(instanceName: 'dio_retrofit_2'),
-        baseURL: get<String>(),
+        baseURL: get<String>(instanceName: 'concungBaseURL2'),
       ));
   gh.factory<_i5.PostRemote>(() => _i5.PostRemote(
         get<_i3.Dio>(instanceName: 'linhtinh_dio_1'),
-        baseURL: get<String>(),
+        baseURL: get<String>(instanceName: 'linhtinhBaseURL1'),
       ));
-  gh.singleton<_i6.DioExampleModel1>(
-      _i6.DioExampleModel1(get<_i4.DioService>(instanceName: 'dio_1')));
+  gh.singleton<_i6.PostRepository>(
+      _i6.PostRepositoryImpl(get<_i5.PostRemote>()));
+  gh.singleton<_i7.DioExampleModel1>(
+      _i7.DioExampleModel1(get<_i4.DioService>(instanceName: 'dio_1')));
+  gh.factory<_i8.MyController>(
+      () => _i8.MyController(get<_i6.PostRepository>()));
   return get;
 }
 
-class _$DataModule extends _i7.DataModule {}
+class _$DataModule extends _i9.DataModule {}

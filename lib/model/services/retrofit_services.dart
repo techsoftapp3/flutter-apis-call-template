@@ -12,7 +12,7 @@ abstract class ExampleModel1Remote {
   @factoryMethod
   factory ExampleModel1Remote(
     @Named("dio_retrofit_1") Dio dio, {
-    String? baseURL,
+    @Named("concungBaseURL2") String? baseURL,
   }) {
     return _ExampleModel1Remote(dio, baseUrl: baseURL);
   }
@@ -43,7 +43,7 @@ abstract class ExampleModel2Remote {
   @factoryMethod
   factory ExampleModel2Remote(
     @Named("dio_retrofit_2") Dio dio, {
-    String? baseURL,
+    @Named("concungBaseURL2") String? baseURL,
   }) {
     return _ExampleModel2Remote(dio, baseUrl: baseURL);
   }
@@ -55,7 +55,8 @@ abstract class ExampleModel2Remote {
 @RestApi()
 abstract class PostRemote {
   @factoryMethod
-  factory PostRemote(@Named("linhtinh_dio_1") Dio dio, {String? baseURL}) {
+  factory PostRemote(@Named("linhtinh_dio_1") Dio dio,
+      {@Named("linhtinhBaseURL1") String? baseURL}) {
     return _PostRemote(dio, baseUrl: baseURL);
   }
   @GET("posts/{id}")
@@ -68,7 +69,7 @@ abstract class PostRemote {
   @Headers(<String, dynamic>{
     'Content-type': 'application/json; charset=UTF-8',
   })
-  Future<PostModel> addPost(@Body() PostModel json);
+  Future<PostModel> addPost(@Body() PostModel post);
 
   @PUT("posts/{id}")
   @Headers(<String, dynamic>{
