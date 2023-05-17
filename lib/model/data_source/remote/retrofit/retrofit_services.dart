@@ -1,10 +1,10 @@
-import 'package:api_tools_test/model/models/example_model1.dart';
-import 'package:api_tools_test/model/models/example_model2.dart';
-import 'package:api_tools_test/model/models/post_model.dart';
+import 'package:api_tools_test/model/entities/example_model1.dart';
+import 'package:api_tools_test/model/entities/example_model2.dart';
+import 'package:api_tools_test/model/entities/post_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-part "retrofit_services.g.dart";
+part 'retrofit_services.g.dart';
 
 @injectable
 @RestApi()
@@ -60,25 +60,25 @@ abstract class PostRemote {
     return _PostRemote(dio, baseUrl: baseURL);
   }
   @GET("posts/{id}")
-  Future<PostModel> getPostById(@Path("id") int id);
+  Future<Post> getPostById(@Path("id") int id);
 
   @GET("posts")
-  Future<List<PostModel>> getPosts();
+  Future<List<Post>> getPosts();
 
   @POST("posts")
   @Headers(<String, dynamic>{
     'Content-type': 'application/json; charset=UTF-8',
   })
-  Future<PostModel> addPost(@Body() PostModel post);
+  Future<Post> addPost(@Body() Post post);
 
   @PUT("posts/{id}")
   @Headers(<String, dynamic>{
     'Content-type': 'application/json; charset=UTF-8',
   })
-  Future<PostModel> updatePost(@Body() PostModel json, @Path("id") int id);
+  Future<Post> updatePost(@Body() Post json, @Path("id") int id);
   @DELETE("posts/{id}")
-  Future<PostModel> deletePost(@Path("id") int id);
+  Future<Post> deletePost(@Path("id") int id);
 
   @GET("posts")
-  Future<List<PostModel>> filterByUserId(@Query("userId") int userId);
+  Future<List<Post>> filterByUserId(@Query("userId") int userId);
 }

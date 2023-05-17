@@ -1,8 +1,8 @@
-import 'package:api_tools_test/injectable.dart';
-import 'package:api_tools_test/model/data/remote/dio/dio_remote.dart';
-import 'package:api_tools_test/model/models/post_model.dart';
-import 'package:api_tools_test/model/services/retrofit_services.dart';
-import 'package:api_tools_test/page_config.dart';
+import 'package:api_tools_test/config/injectable.dart';
+import 'package:api_tools_test/model/data_source/remote/dio/dio_remote.dart';
+import 'package:api_tools_test/model/entities/post_model.dart';
+import 'package:api_tools_test/model/data_source/remote/retrofit/retrofit_services.dart';
+import 'package:api_tools_test/config/page_config.dart';
 import 'package:api_tools_test/view_model/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,7 +97,7 @@ class MyHomePage extends GetView<MyController> {
               ),
             ),
             TextButton(
-              onPressed: () async => controller.addPost(PostModel.fromJson(
+              onPressed: () async => controller.addPost(Post.fromJson(
                 <String, dynamic>{
                   "title": 'foo',
                   "body": 'bar',
@@ -111,7 +111,7 @@ class MyHomePage extends GetView<MyController> {
             ),
             TextButton(
               onPressed: () async => controller.updatePost(
-                  post: PostModel.fromJson(
+                  post: Post.fromJson(
                     <String, dynamic>{
                       "id": 2,
                       "title": 'Cabv',

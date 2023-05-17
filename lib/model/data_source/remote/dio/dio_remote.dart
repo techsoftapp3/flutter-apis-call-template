@@ -1,11 +1,9 @@
-import 'package:api_tools_test/injectable.dart';
-import 'package:api_tools_test/model/models/example_model1.dart';
+import 'package:api_tools_test/model/entities/example_model1.dart';
 import 'package:api_tools_test/model/services/dio_services.dart';
 import 'package:api_tools_test/model/services/end_points.dart';
 import 'package:api_tools_test/model/services/http_service.dart';
 import 'package:injectable/injectable.dart';
 
-// import 'package:get/get_connect/http/src/request/request.dart';
 @singleton
 class DioExampleModel1 {
   final DioService instance;

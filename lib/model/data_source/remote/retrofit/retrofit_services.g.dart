@@ -164,13 +164,13 @@ class _PostRemote implements PostRemote {
   String? baseUrl;
 
   @override
-  Future<PostModel> getPostById(id) async {
+  Future<Post> getPostById(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PostModel>(Options(
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Post>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -182,18 +182,18 @@ class _PostRemote implements PostRemote {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PostModel.fromJson(_result.data!);
+    final value = Post.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<PostModel>> getPosts() async {
+  Future<List<Post>> getPosts() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<PostModel>>(Options(
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Post>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -206,13 +206,13 @@ class _PostRemote implements PostRemote {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => Post.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<PostModel> addPost(json) async {
+  Future<Post> addPost(post) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
@@ -220,9 +220,9 @@ class _PostRemote implements PostRemote {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(json.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PostModel>(Options(
+    _data.addAll(post.toJson());
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Post>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -235,12 +235,12 @@ class _PostRemote implements PostRemote {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PostModel.fromJson(_result.data!);
+    final value = Post.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<PostModel> updatePost(
+  Future<Post> updatePost(
     json,
     id,
   ) async {
@@ -252,8 +252,8 @@ class _PostRemote implements PostRemote {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(json.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PostModel>(Options(
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Post>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -266,18 +266,18 @@ class _PostRemote implements PostRemote {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PostModel.fromJson(_result.data!);
+    final value = Post.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<PostModel> deletePost(id) async {
+  Future<Post> deletePost(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PostModel>(Options(
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Post>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -289,18 +289,18 @@ class _PostRemote implements PostRemote {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PostModel.fromJson(_result.data!);
+    final value = Post.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<PostModel>> filterByUserId(userId) async {
+  Future<List<Post>> filterByUserId(userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'userId': userId};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<PostModel>>(Options(
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Post>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -313,7 +313,7 @@ class _PostRemote implements PostRemote {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => Post.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

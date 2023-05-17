@@ -1,6 +1,6 @@
-import 'package:api_tools_test/injectable.dart';
-import 'package:api_tools_test/model/data/repository/retrofit_repository.dart';
-import 'package:api_tools_test/model/models/post_model.dart';
+import 'package:api_tools_test/config/injectable.dart';
+import 'package:api_tools_test/model/repositories/retrofit_repository.dart';
+import 'package:api_tools_test/model/entities/post_model.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,13 +27,13 @@ class MyController extends GetxController {
         }));
   }
 
-  void addPost(PostModel post) async {
+  void addPost(Post post) async {
     return postRepository.addPost(post).then((value) {
       print(value.toJson());
     });
   }
 
-  void updatePost({required PostModel post, required int index}) async {
+  void updatePost({required Post post, required int index}) async {
     return postRepository
         .updatePost(post: post, index: index)
         .then((value) => print(value.toJson()));
