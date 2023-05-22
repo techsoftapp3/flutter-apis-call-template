@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:api_tools_test/model/services/dio_services.dart';
-import 'package:api_tools_test/utils/connection_utils.dart';
-import 'package:api_tools_test/utils/custom_exception.dart';
+import 'package:api_tools_test/core/utils/connection_utils.dart';
+import 'package:api_tools_test/core/utils/custom_exception.dart';
 import 'package:http/http.dart' as http;
 
 class HttpService {

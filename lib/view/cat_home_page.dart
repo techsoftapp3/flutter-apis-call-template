@@ -1,3 +1,4 @@
+import 'package:api_tools_test/model/cat_image/cat_image.dart';
 import 'package:api_tools_test/view_model/cat_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +16,9 @@ class CatHomePage extends GetView<CatController> {
           TextButton(
             onPressed: () async {
               controller.getCatsImage(
-                limit: 2,
+                limit: 10,
                 page: 1,
-                order: "ASC",
+                hasBreeds: true,
               );
             },
             child: Text(
@@ -31,6 +32,25 @@ class CatHomePage extends GetView<CatController> {
             },
             child: Text(
               'Get DB',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              controller.getBreedsFromCatImageById("HELLO");
+            },
+            child: Text(
+              'Get Breeds from Cat Image',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final param = clm.map((e) => CatImage.fromJson(e)).toList();
+              controller.insertCatImage(param);
+            },
+            child: Text(
+              'Insert Cat Image',
               style: Theme.of(context).textTheme.headline4,
             ),
           ),

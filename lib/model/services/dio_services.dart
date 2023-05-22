@@ -1,5 +1,5 @@
-import 'package:api_tools_test/utils/connection_utils.dart';
-import 'package:api_tools_test/utils/custom_exception.dart';
+import 'package:api_tools_test/core/utils/connection_utils.dart';
+import 'package:api_tools_test/core/utils/custom_exception.dart';
 import 'package:dio/dio.dart';
 
 class DioService {

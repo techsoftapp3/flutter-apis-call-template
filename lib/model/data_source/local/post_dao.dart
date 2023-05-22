@@ -23,4 +23,6 @@ abstract class PostDao {
 
   @Query("select * from Post as p where p.`userId` = :userId ")
   Future<List<Post>> getPostByUserId(int userId);
+
+  //delete table
 }

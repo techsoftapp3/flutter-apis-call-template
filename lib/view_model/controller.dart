@@ -1,4 +1,4 @@
-import 'package:api_tools_test/config/injectable.dart';
+import 'package:api_tools_test/core/config/injectable.dart';
 import 'package:api_tools_test/model/repositories/retrofit_repository.dart';
 import 'package:api_tools_test/model/entities/post_model.dart';
 import 'package:get/get.dart';

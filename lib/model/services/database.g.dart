@@ -91,7 +91,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CatImage` (`id` TEXT, `url` TEXT, `breeds` TEXT, `width` INTEGER, `height` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Breed` (`weight` TEXT, `id` TEXT, `cat_id` TEXT, `name` TEXT, `cfa_url` TEXT, `vetstreet_url` TEXT, `vcahospitals_url` TEXT, `temperament` TEXT, `origin` TEXT, `country_codes` TEXT, `countryCode` TEXT, `description` TEXT, `life_span` TEXT, `indoor` INTEGER, `lap` INTEGER, `alt_names` TEXT, `adaptability` INTEGER, `affection_level` INTEGER, `child_friendly` INTEGER, `dog_friendly` INTEGER, `energy_level` INTEGER, `grooming` INTEGER, `health_issues` INTEGER, `intelligence` INTEGER, `shedding_level` INTEGER, `social_needs` INTEGER, `stranger_friendly` INTEGER, `vocalisation` INTEGER, `experimental` INTEGER, `hairless` INTEGER, `natural` INTEGER, `rare` INTEGER, `rex` INTEGER, `suppressed_tail` INTEGER, `short_legs` INTEGER, `wikipedia_url` TEXT, `hypoallergenic` INTEGER, `reference_image_id` TEXT, FOREIGN KEY (`cat_id`) REFERENCES `CatImage` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Breed` (`weight` TEXT, `id` TEXT, `cat_id` TEXT, `name` TEXT, `cfa_url` TEXT, `vetstreet_url` TEXT, `vcahospitals_url` TEXT, `temperament` TEXT, `origin` TEXT, `country_codes` TEXT, `countryCode` TEXT, `description` TEXT, `life_span` TEXT, `indoor` INTEGER, `lap` INTEGER, `alt_names` TEXT, `adaptability` INTEGER, `affection_level` INTEGER, `child_friendly` INTEGER, `dog_friendly` INTEGER, `energy_level` INTEGER, `grooming` INTEGER, `health_issues` INTEGER, `intelligence` INTEGER, `shedding_level` INTEGER, `social_needs` INTEGER, `stranger_friendly` INTEGER, `vocalisation` INTEGER, `experimental` INTEGER, `hairless` INTEGER, `natural` INTEGER, `rare` INTEGER, `rex` INTEGER, `suppressed_tail` INTEGER, `short_legs` INTEGER, `wikipedia_url` TEXT, `hypoallergenic` INTEGER, `reference_image_id` TEXT, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Weight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imperial` TEXT, `metric` TEXT)');
 
@@ -235,6 +235,14 @@ class _$CatDao extends CatDao {
             breeds: _breedConverter.decode(row['breeds'] as String),
             width: row['width'] as int?,
             height: row['height'] as int?));
+  }
+
+  @override
+  Future<String?> getBreedsFromCatImage(String id) async {
+    return _queryAdapter.query(
+        'select breeds from CatImage as c where c.`id` = ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as String,
+        arguments: [id]);
   }
 
   @override

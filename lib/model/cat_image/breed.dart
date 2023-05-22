@@ -1,20 +1,32 @@
 import 'dart:convert';
-
-import 'package:api_tools_test/model/cat_image/cat_image.dart';
 import 'package:floor/floor.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import 'weight.dart';
-
 part 'breed.g.dart';
 
-@Entity(tableName: "Breed", foreignKeys: [
-  ForeignKey(
-    childColumns: ["cat_id"],
-    parentColumns: ["id"],
-    entity: CatImage,
-  )
-])
+class WeightConverter extends TypeConverter<Weight?, String> {
+  @override
+  Weight decode(String databaseValue) {
+    final data = jsonDecode(databaseValue);
+    final Weight weight = Weight.fromJson(data);
+    return weight;
+  }
+
+  @override
+  String encode(Weight? value) {
+    final Map<String, dynamic> data = {};
+    data.addAll((value ??
+            Weight(
+              imperial: "8 - 16",
+              metric: "4 - 7",
+            ))
+        .toJson());
+    return jsonEncode(data);
+  }
+}
+
+@TypeConverters([WeightConverter])
+@entity
 @JsonSerializable()
 class Breed {
   Weight? weight;

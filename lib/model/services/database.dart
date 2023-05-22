@@ -11,9 +11,11 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'database.g.dart';
 
-@TypeConverters([BreedConverter, WeightConverter])
 @Database(version: 1, entities: [Post, CatImage, Breed, Weight])
 abstract class AppDatabase extends FloorDatabase {
   PostDao get postDao;
   CatDao get catDao;
+  @override
+  // TODO: implement database
+  sqflite.DatabaseExecutor get database => super.database;
 }
