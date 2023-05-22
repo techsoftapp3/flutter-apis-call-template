@@ -11,9 +11,10 @@ class CatImage {
   @primaryKey
   String? id;
   String? url;
-  List<Breed>? breeds;
   int? width;
   int? height;
+  @ignore
+  List<Breed>? breeds;
 
   CatImage({this.id, this.url, this.breeds, this.width, this.height});
 
@@ -44,3 +45,5 @@ class CatImage {
     );
   }
 }
+
+

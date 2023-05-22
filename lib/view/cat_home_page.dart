@@ -16,8 +16,7 @@ class CatHomePage extends GetView<CatController> {
             onPressed: () async {
               controller.getCatsImage(
                 limit: 2,
-                page: 1,
-                order: "ASC",
+                order: "RAND",
               );
             },
             child: Text(

@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:api_tools_test/model/cat_image/breed.dart';
 import 'package:api_tools_test/model/cat_image/cat_image.dart';
+import 'package:api_tools_test/model/cat_image/cat_image_with_breed.dart';
 import 'package:api_tools_test/model/data_source/remote/retrofit/cat_remote.dart';
 import 'package:api_tools_test/model/services/database.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +17,7 @@ abstract class CatRepository {
     String categoryIds = "",
     String subId = "",
   });
-  Future<List<CatImage>> getCatImagesFromDB();
+  Future<List<CatImageWithBreed>> getCatImagesFromDB();
 }
 
 @Injectable(as: CatRepository)
@@ -40,12 +44,21 @@ class CatRepositoryImpl implements CatRepository {
       order: order,
       hasBreeds: hasBreeds,
     );
+    List<Breed> breedResult = [];
+    for (final element in fromServer) {
+      List<Breed>? breeds = element.breeds ?? [];
+      for (final breed in breeds) {
+        breed.catId = element.id;
+      }
+      breedResult.addAll(breeds);
+    }
     local.catDao.insertCatImage(fromServer);
+    local.catDao.insertBreed(breedResult);
     return fromServer;
   }
 
   @override
-  Future<List<CatImage>> getCatImagesFromDB() async {
+  Future<List<CatImageWithBreed>> getCatImagesFromDB() async {
     return local.catDao.getCatImagesFromDB();
   }
 }

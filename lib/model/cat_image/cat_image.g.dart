@@ -19,7 +19,7 @@ CatImage _$CatImageFromJson(Map<String, dynamic> json) => CatImage(
 Map<String, dynamic> _$CatImageToJson(CatImage instance) => <String, dynamic>{
       'id': instance.id,
       'url': instance.url,
-      'breeds': instance.breeds,
       'width': instance.width,
       'height': instance.height,
+      'breeds': instance.breeds,
     };

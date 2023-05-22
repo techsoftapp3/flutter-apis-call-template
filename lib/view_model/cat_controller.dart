@@ -1,6 +1,7 @@
 import 'package:api_tools_test/config/injectable.dart';
 import 'package:api_tools_test/model/cat_image/cat_image.dart';
 import 'package:api_tools_test/model/repositories/cat_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 
@@ -45,7 +46,7 @@ class CatController extends GetxController {
   Future<void> getCatImagesFromDB() async {
     return catRepository.getCatImagesFromDB().then(
           (value) => value.forEach((element) {
-            print(element.toString());
+            debugPrint(element.toString());
           }),
         );
   }

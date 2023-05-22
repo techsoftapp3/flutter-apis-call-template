@@ -89,11 +89,13 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Post` (`userId` INTEGER, `id` INTEGER, `title` TEXT, `body` TEXT, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CatImage` (`id` TEXT, `url` TEXT, `breeds` TEXT, `width` INTEGER, `height` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CatImage` (`id` TEXT, `url` TEXT, `width` INTEGER, `height` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Breed` (`weight` TEXT, `id` TEXT, `cat_id` TEXT, `name` TEXT, `cfa_url` TEXT, `vetstreet_url` TEXT, `vcahospitals_url` TEXT, `temperament` TEXT, `origin` TEXT, `country_codes` TEXT, `countryCode` TEXT, `description` TEXT, `life_span` TEXT, `indoor` INTEGER, `lap` INTEGER, `alt_names` TEXT, `adaptability` INTEGER, `affection_level` INTEGER, `child_friendly` INTEGER, `dog_friendly` INTEGER, `energy_level` INTEGER, `grooming` INTEGER, `health_issues` INTEGER, `intelligence` INTEGER, `shedding_level` INTEGER, `social_needs` INTEGER, `stranger_friendly` INTEGER, `vocalisation` INTEGER, `experimental` INTEGER, `hairless` INTEGER, `natural` INTEGER, `rare` INTEGER, `rex` INTEGER, `suppressed_tail` INTEGER, `short_legs` INTEGER, `wikipedia_url` TEXT, `hypoallergenic` INTEGER, `reference_image_id` TEXT, FOREIGN KEY (`cat_id`) REFERENCES `CatImage` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Weight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imperial` TEXT, `metric` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `CatImageWithBreed` (`weight` TEXT, `id` TEXT, `url` TEXT, `width` INTEGER, `height` INTEGER, `name` TEXT, `cfa_url` TEXT, `vetstreet_url` TEXT, `vcahospitals_url` TEXT, `temperament` TEXT, `origin` TEXT, `country_codes` TEXT, `countryCode` TEXT, `description` TEXT, `life_span` TEXT, `indoor` INTEGER, `lap` INTEGER, `alt_names` TEXT, `adaptability` INTEGER, `affection_level` INTEGER, `child_friendly` INTEGER, `dog_friendly` INTEGER, `energy_level` INTEGER, `grooming` INTEGER, `health_issues` INTEGER, `intelligence` INTEGER, `shedding_level` INTEGER, `social_needs` INTEGER, `stranger_friendly` INTEGER, `vocalisation` INTEGER, `experimental` INTEGER, `hairless` INTEGER, `natural` INTEGER, `rare` INTEGER, `rex` INTEGER, `suppressed_tail` INTEGER, `short_legs` INTEGER, `wikipedia_url` TEXT, `hypoallergenic` INTEGER, `reference_image_id` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -213,9 +215,51 @@ class _$CatDao extends CatDao {
             (CatImage item) => <String, Object?>{
                   'id': item.id,
                   'url': item.url,
-                  'breeds': _breedConverter.encode(item.breeds),
                   'width': item.width,
                   'height': item.height
+                }),
+        _breedInsertionAdapter = InsertionAdapter(
+            database,
+            'Breed',
+            (Breed item) => <String, Object?>{
+                  'weight': _weightConverter.encode(item.weight),
+                  'id': item.id,
+                  'cat_id': item.catId,
+                  'name': item.name,
+                  'cfa_url': item.cfaUrl,
+                  'vetstreet_url': item.vetstreetUrl,
+                  'vcahospitals_url': item.vcahospitalsUrl,
+                  'temperament': item.temperament,
+                  'origin': item.origin,
+                  'country_codes': item.countryCodes,
+                  'countryCode': item.countryCode,
+                  'description': item.description,
+                  'life_span': item.lifeSpan,
+                  'indoor': item.indoor,
+                  'lap': item.lap,
+                  'alt_names': item.altNames,
+                  'adaptability': item.adaptability,
+                  'affection_level': item.affectionLevel,
+                  'child_friendly': item.childFriendly,
+                  'dog_friendly': item.dogFriendly,
+                  'energy_level': item.energyLevel,
+                  'grooming': item.grooming,
+                  'health_issues': item.healthIssues,
+                  'intelligence': item.intelligence,
+                  'shedding_level': item.sheddingLevel,
+                  'social_needs': item.socialNeeds,
+                  'stranger_friendly': item.strangerFriendly,
+                  'vocalisation': item.vocalisation,
+                  'experimental': item.experimental,
+                  'hairless': item.hairless,
+                  'natural': item.natural,
+                  'rare': item.rare,
+                  'rex': item.rex,
+                  'suppressed_tail': item.suppressedTail,
+                  'short_legs': item.shortLegs,
+                  'wikipedia_url': item.wikipediaUrl,
+                  'hypoallergenic': item.hypoallergenic,
+                  'reference_image_id': item.referenceImageId
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -226,15 +270,53 @@ class _$CatDao extends CatDao {
 
   final InsertionAdapter<CatImage> _catImageInsertionAdapter;
 
+  final InsertionAdapter<Breed> _breedInsertionAdapter;
+
   @override
-  Future<List<CatImage>> getCatImagesFromDB() async {
-    return _queryAdapter.queryList('select * from CatImage',
-        mapper: (Map<String, Object?> row) => CatImage(
-            id: row['id'] as String?,
+  Future<List<CatImageWithBreed>> getCatImagesFromDB() async {
+    return _queryAdapter.queryList(
+        'select * from CatImage as c inner join Breed as b on b.`cat_id` = c.`id`',
+        mapper: (Map<String, Object?> row) => CatImageWithBreed(
             url: row['url'] as String?,
-            breeds: _breedConverter.decode(row['breeds'] as String),
             width: row['width'] as int?,
-            height: row['height'] as int?));
+            height: row['height'] as int?,
+            weight: _weightConverter.decode(row['weight'] as String),
+            id: row['id'] as String?,
+            name: row['name'] as String?,
+            cfaUrl: row['cfa_url'] as String?,
+            vetstreetUrl: row['vetstreet_url'] as String?,
+            vcahospitalsUrl: row['vcahospitals_url'] as String?,
+            temperament: row['temperament'] as String?,
+            origin: row['origin'] as String?,
+            countryCodes: row['country_codes'] as String?,
+            countryCode: row['countryCode'] as String?,
+            description: row['description'] as String?,
+            lifeSpan: row['life_span'] as String?,
+            indoor: row['indoor'] as int?,
+            lap: row['lap'] as int?,
+            altNames: row['alt_names'] as String?,
+            adaptability: row['adaptability'] as int?,
+            affectionLevel: row['affection_level'] as int?,
+            childFriendly: row['child_friendly'] as int?,
+            dogFriendly: row['dog_friendly'] as int?,
+            energyLevel: row['energy_level'] as int?,
+            grooming: row['grooming'] as int?,
+            healthIssues: row['health_issues'] as int?,
+            intelligence: row['intelligence'] as int?,
+            sheddingLevel: row['shedding_level'] as int?,
+            socialNeeds: row['social_needs'] as int?,
+            strangerFriendly: row['stranger_friendly'] as int?,
+            vocalisation: row['vocalisation'] as int?,
+            experimental: row['experimental'] as int?,
+            hairless: row['hairless'] as int?,
+            natural: row['natural'] as int?,
+            rare: row['rare'] as int?,
+            rex: row['rex'] as int?,
+            suppressedTail: row['suppressed_tail'] as int?,
+            shortLegs: row['short_legs'] as int?,
+            wikipediaUrl: row['wikipedia_url'] as String?,
+            hypoallergenic: row['hypoallergenic'] as int?,
+            referenceImageId: row['reference_image_id'] as String?));
   }
 
   @override
@@ -242,8 +324,13 @@ class _$CatDao extends CatDao {
     await _catImageInsertionAdapter.insertList(
         catImage, OnConflictStrategy.replace);
   }
+
+  @override
+  Future<void> insertBreed(List<Breed> catImage) async {
+    await _breedInsertionAdapter.insertList(
+        catImage, OnConflictStrategy.replace);
+  }
 }
 
 // ignore_for_file: unused_element
-final _breedConverter = BreedConverter();
 final _weightConverter = WeightConverter();

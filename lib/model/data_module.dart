@@ -28,7 +28,6 @@ abstract class DataModule {
           (
             `url` TEXT ,
             `id` TEXT PRIMARY KEY UNIQUE ,
-            `breeds` TEXT,
             `width` INTEGER,
             `height` INTEGER,
           );
@@ -41,6 +40,7 @@ abstract class DataModule {
           CREATE TABLE IF NOT EXISTS `Breed`
           (
             `id` PRIMARY KEY UNIQUE,
+            `cat_id` TEXT,
             `weight` TEXT,
             `name` TEXT,
             `cfa_url` TEXT,
@@ -76,6 +76,7 @@ abstract class DataModule {
             `wikipedia_url` TEXT,
             `hypoallergenic` INTEGER,
             `reference_image_id` INTEGER,
+            FOREIGN KEY(cat_id) REFERENCES CatImage(id)
           );
 
               """);
