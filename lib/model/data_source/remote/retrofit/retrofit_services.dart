@@ -12,7 +12,7 @@ abstract class ExampleModel1Remote {
   @factoryMethod
   factory ExampleModel1Remote(
     @Named("dio_retrofit_1") Dio dio, {
-    @Named("concungBaseURL2") String? baseURL,
+    @Named("conCungBaseURL2") String? baseURL,
   }) {
     return _ExampleModel1Remote(dio, baseUrl: baseURL);
   }
@@ -43,7 +43,7 @@ abstract class ExampleModel2Remote {
   @factoryMethod
   factory ExampleModel2Remote(
     @Named("dio_retrofit_2") Dio dio, {
-    @Named("concungBaseURL2") String? baseURL,
+    @Named("conCungBaseURL2") String? baseURL,
   }) {
     return _ExampleModel2Remote(dio, baseUrl: baseURL);
   }

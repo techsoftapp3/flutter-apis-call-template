@@ -35,7 +35,7 @@ class MyController extends GetxController {
 
   void updatePost({required Post post, required int index}) async {
     return postRepository
-        .updatePost(post: post, index: index)
+        .updatePost(post: post, id: index)
         .then((value) => print(value.toJson()));
   }
 
@@ -50,4 +50,5 @@ class MyController extends GetxController {
           }),
         );
   }
+
 }
