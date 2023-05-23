@@ -11,11 +11,8 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'database.g.dart';
 
-@Database(version: 1, entities: [Post, CatImage, Breed, Weight])
+@Database(version: 2, entities: [Post, CatImage, Breed, Weight])
 abstract class AppDatabase extends FloorDatabase {
   PostDao get postDao;
   CatDao get catDao;
-  @override
-  // TODO: implement database
-  sqflite.DatabaseExecutor get database => super.database;
 }

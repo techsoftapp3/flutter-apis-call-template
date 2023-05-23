@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:floor/floor.dart';
+import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'weight.dart';
 part 'breed.g.dart';
 
+@singleton
 class WeightConverter extends TypeConverter<Weight?, String> {
   @override
   Weight decode(String databaseValue) {

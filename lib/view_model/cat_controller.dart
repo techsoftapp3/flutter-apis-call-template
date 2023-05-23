@@ -1,4 +1,5 @@
 import 'package:api_tools_test/core/config/injectable.dart';
+import 'package:api_tools_test/model/cat_image/breed.dart';
 import 'package:api_tools_test/model/cat_image/cat_image.dart';
 import 'package:api_tools_test/model/repositories/cat_repository.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class CatController extends GetxController {
   CatController(this.catRepository);
   final CatRepository catRepository;
 
-  getCatsImage({
+  Future<void> getCatsImage({
     required int limit,
     int page = 10,
     String order = "random",
@@ -42,7 +43,7 @@ class CatController extends GetxController {
         );
   }
 
-  getCatImagesFromDB() async {
+  Future<void> getCatImagesFromDB() async {
     return catRepository.getCatImagesFromDB().then(
           (value) => value.forEach((element) {
             print(element.toString());
@@ -50,16 +51,41 @@ class CatController extends GetxController {
         );
   }
 
-  getBreedsFromCatImageById(String id) async {
-    return catRepository
-        .getBreedsFromCatImage(id)
-        .then((value) => value.forEach((element) {
-              print(element.toString());
-            }));
+  Future<void> getBreedsFromCatImageById(String id) async {
+    return catRepository.getBreedsFromCatImage(id).then(
+      (value) {
+        if (value.isEmpty) print("No record found!");
+        value.forEach((element) {
+          print(element.toString());
+        });
+      },
+    );
   }
 
-  insertCatImage(List<CatImage> catImages) async {
+  Future<void> insertCatImage(List<CatImage> catImages) async {
     return catRepository.insertCatImage(catImages);
+  }
+
+  Future<void> deleteCatImages() {
+    return catRepository.deleteCatImagesData().then(
+          (value) => print("Already delete ${value ?? 0} records"),
+        );
+  }
+
+  Future<void> deleteCatImagesById(String id) {
+    return catRepository.deleteCatImagesDataById(id).then(
+          (value) => print("Already delete ${value ?? 0} records"),
+        );
+  }
+
+  Future<void> updateCatImageSizeById({
+    required String id,
+    required double height,
+    required double width,
+  }) {
+    return catRepository
+        .updateCatImageSize(height: height, width: width, id: id)
+        .then((value) => print("Already delete ${value ?? 0} records"));
   }
 }
 

@@ -22,7 +22,6 @@ class PostRepositoryImpl implements PostRepository {
   Future<Post> getPostById(int id) async {
     final fromLocal = await local.postDao.getPostsById(id);
     if (fromLocal == null) {
-      print("call api");
       final response = await remote.getPostById(id);
       local.postDao.insertPost(response);
       return response;

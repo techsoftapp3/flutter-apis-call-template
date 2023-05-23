@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:floor/floor.dart';
+import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'breed.dart';
 
 part 'cat_image.g.dart';
 
+@singleton
 class BreedConverter extends TypeConverter<List<Breed>?, String> {
   @override
   List<Breed> decode(String databaseValue) {
+    if (databaseValue.isEmpty) return [];
     final data = jsonDecode(databaseValue);
     final List<Map<String, dynamic>> result = [];
     if (data is List) {
@@ -15,19 +19,13 @@ class BreedConverter extends TypeConverter<List<Breed>?, String> {
     } else {
       result.add(data);
     }
-    final List<Breed> breeds = [];
-    for (final element in result) {
-      breeds.add(Breed.fromJson(element));
-    }
-    return breeds;
+    return result.map((e) => Breed.fromJson(e)).toList();
   }
 
   @override
   String encode(List<Breed>? value) {
-    final List<Map<String, dynamic>> data = [];
-    for (final element in value ?? []) {
-      data.add(element.toJson());
-    }
+    final List<Map<String, dynamic>> data =
+        (value ?? []).map((e) => e.toJson()).toList();
     return jsonEncode(data);
   }
 }

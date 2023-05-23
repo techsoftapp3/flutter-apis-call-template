@@ -12,16 +12,18 @@ abstract class DataModule {
     int oldVersion = 1;
     int newVersion = 2;
     List<Migration> list = <Migration>[
-      // Migration(oldVersion, newVersion, (database) {
-      //   return database.execute("""CREATE TABLE IF NOT EXISTS `Post`
-      //         (
-      //           `userId` ,
-      //           `id` INTERGER PRIMARY KEY UNIQUE AUTOINCREMENT,
-      //           `title` TEXT,
-      //           `body` TEXT,
-      //         )
-      //         """);
-      // }),
+      Migration(oldVersion, newVersion, (database) {
+        return database.execute(
+          """CREATE TABLE IF NOT EXISTS `Post`
+              (
+                `userId` ,
+                `id` INTERGER PRIMARY KEY UNIQUE AUTOINCREMENT,
+                `title` TEXT,
+                `body` TEXT,
+              )
+          """,
+        );
+      }),
       Migration(oldVersion, newVersion, (database) {
         return database.execute("""
           CREATE TABLE IF NOT EXISTS `CatImage` 

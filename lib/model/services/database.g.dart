@@ -71,7 +71,7 @@ class _$AppDatabase extends AppDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 2,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -243,6 +243,31 @@ class _$CatDao extends CatDao {
         'select breeds from CatImage as c where c.`id` = ?1',
         mapper: (Map<String, Object?> row) => row.values.first as String,
         arguments: [id]);
+  }
+
+  @override
+  Future<int?> deleteCatImagesData() async {
+    return _queryAdapter.query('delete from CatImage',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<int?> deleteCatImagesDataById(String id) async {
+    return _queryAdapter.query('delete from CatImage as c where c.`id` = ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [id]);
+  }
+
+  @override
+  Future<int?> updateCatImageSize(
+    String id,
+    double height,
+    double width,
+  ) async {
+    return _queryAdapter.query(
+        'update CatImage as c set c.`height` = ?2. c.`width` = ?3 where c.`id` = ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [id, height, width]);
   }
 
   @override
