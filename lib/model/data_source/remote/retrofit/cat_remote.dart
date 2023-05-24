@@ -16,7 +16,7 @@ abstract class CatRemote {
   Future<List<CatImage>> getImages({
     @Query("limit") required int limit,
     @Query("page") int page = 10,
-    @Query("order") String order = "random",
+    @Query("order") String order = "RAND",
     @Query("has_breeds") bool hasBreeds = true,
     @Query("breed_ids") String breadIds = "",
     @Query("category_ids") String categoryIds = "",

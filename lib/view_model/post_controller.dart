@@ -4,16 +4,16 @@ import 'package:api_tools_test/model/entities/post_model.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 
-class MyControllerBinding extends Bindings {
+class PostControllerBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => getIt<MyController>());
+    Get.lazyPut(() => getIt<PostController>());
   }
 }
 
 @injectable
-class MyController extends GetxController {
-  MyController(this.postRepository);
+class PostController extends GetxController {
+  PostController(this.postRepository);
   final PostRepository postRepository;
   void getPostById(int id) async {
     return postRepository.getPostById(id).then(
@@ -22,25 +22,32 @@ class MyController extends GetxController {
   }
 
   void getPosts() async {
-    return postRepository.getPosts().then((value) => value.forEach((element) {
-          print(element.toJson());
-        }));
+    return postRepository.getPosts().then((value) {
+      if (value.isEmpty) {
+        print("No posts in database");
+      }
+      value.forEach((element) {
+        print(element.toJson());
+      });
+    });
   }
 
   void addPost(Post post) async {
     return postRepository.addPost(post).then((value) {
-      print(value.toJson());
+      print("${value} record added!");
     });
   }
 
   void updatePost({required Post post, required int index}) async {
     return postRepository
         .updatePost(post: post, id: index)
-        .then((value) => print(value.toJson()));
+        .then((value) => print("$value records updated"));
   }
 
-  void deletePost(int id) async {
-    return postRepository.deletePost(id).then((value) => print(value.toJson()));
+  void deletePostById(int id) async {
+    return postRepository
+        .deletePostById(id)
+        .then((value) => print("$value records deleted"));
   }
 
   void filterPostsById(int userId) async {
@@ -49,5 +56,15 @@ class MyController extends GetxController {
             print(element.toJson());
           }),
         );
+  }
+
+  void deletePosts() async {
+    return postRepository
+        .deletePosts()
+        .then((value) => print("${value ?? 0} posts deleted"));
+  }
+
+  void insertListPosts() async {
+    return postRepository.insertListPosts().then((value) => print("inserted"));
   }
 }

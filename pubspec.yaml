@@ -44,6 +44,7 @@ dependencies:
   http: ^0.13.5
   injectable: 1.5.4
   floor: ^1.4.2
+  mockito: ^5.4.0
 
 
 dev_dependencies:

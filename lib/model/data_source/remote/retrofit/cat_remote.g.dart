@@ -22,7 +22,7 @@ class _CatRemote implements CatRemote {
   Future<List<CatImage>> getImages({
     required limit,
     page = 10,
-    order = "random",
+    order = "RAND",
     hasBreeds = true,
     breadIds = "",
     categoryIds = "",

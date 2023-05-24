@@ -9,19 +9,20 @@ import 'package:dio/dio.dart' as _i5;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../model/cat_image/breed.dart' as _i6;
+import '../../model/cat_image/breed.dart' as _i7;
 import '../../model/cat_image/cat_image.dart' as _i4;
-import '../../model/data_module.dart' as _i15;
-import '../../model/data_source/remote/dio/dio_remote.dart' as _i12;
-import '../../model/data_source/remote/retrofit/cat_remote.dart' as _i10;
-import '../../model/data_source/remote/retrofit/retrofit_services.dart' as _i8;
-import '../../model/repositories/cat_repository.dart' as _i11;
-import '../../model/repositories/retrofit_repository.dart' as _i9;
+import '../../model/data_module.dart' as _i16;
+import '../../model/data_source/remote/dio/dio_remote.dart' as _i13;
+import '../../model/data_source/remote/retrofit/cat_remote.dart' as _i11;
+import '../../model/data_source/remote/retrofit/retrofit_services.dart' as _i9;
+import '../../model/repositories/cat_repository.dart' as _i12;
+import '../../model/repositories/retrofit_repository.dart' as _i10;
 import '../../model/services/database.dart' as _i3;
-import '../../model/services/dio_services.dart' as _i7;
-import '../../view_model/cat_controller.dart' as _i14;
-import '../../view_model/controller.dart'
-    as _i13; // ignore_for_file: unnecessary_lambdas
+import '../../model/services/dio_services.dart' as _i8;
+import '../../view_model/cat_controller.dart' as _i15;
+import '../../view_model/home_controller.dart' as _i6;
+import '../../view_model/post_controller.dart'
+    as _i14; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -46,6 +47,7 @@ Future<_i1.GetIt> $initGetIt(
         get<Map<String, dynamic>>(),
         get<_i5.Interceptor>(),
       ));
+  gh.singleton<_i6.HomeController>(_i6.HomeController());
   gh.factory<Map<String, dynamic>>(
     () => dataModule.conCungHeaders1,
     instanceName: 'conCungHeaders1',
@@ -74,7 +76,7 @@ Future<_i1.GetIt> $initGetIt(
     () => dataModule.linhtinhBaseURL1,
     instanceName: 'linhtinhBaseURL1',
   );
-  gh.singleton<_i6.WeightConverter>(_i6.WeightConverter());
+  gh.singleton<_i7.WeightConverter>(_i7.WeightConverter());
   gh.singleton<_i5.Dio>(
     dataModule.getCatDio(get<String>(instanceName: 'cat_base_url')),
     instanceName: 'cat_dio',
@@ -97,41 +99,41 @@ Future<_i1.GetIt> $initGetIt(
     ),
     instanceName: 'dio_retrofit_2',
   );
-  gh.singleton<_i7.DioService>(
+  gh.singleton<_i8.DioService>(
     dataModule.getDioService1(get<_i5.Dio>(instanceName: 'dio_retrofit_1')),
     instanceName: 'dio_1',
   );
-  gh.factory<_i8.ExampleModel1Remote>(() => _i8.ExampleModel1Remote(
+  gh.factory<_i9.ExampleModel1Remote>(() => _i9.ExampleModel1Remote(
         get<_i5.Dio>(instanceName: 'dio_retrofit_1'),
         baseURL: get<String>(instanceName: 'conCungBaseURL2'),
       ));
-  gh.factory<_i8.ExampleModel2Remote>(() => _i8.ExampleModel2Remote(
+  gh.factory<_i9.ExampleModel2Remote>(() => _i9.ExampleModel2Remote(
         get<_i5.Dio>(instanceName: 'dio_retrofit_2'),
         baseURL: get<String>(instanceName: 'conCungBaseURL2'),
       ));
-  gh.factory<_i8.PostRemote>(() => _i8.PostRemote(
+  gh.factory<_i9.PostRemote>(() => _i9.PostRemote(
         get<_i5.Dio>(instanceName: 'linhtinh_dio_1'),
         baseURL: get<String>(instanceName: 'linhtinhBaseURL1'),
       ));
-  gh.singleton<_i9.PostRepository>(_i9.PostRepositoryImpl(
-    get<_i8.PostRemote>(),
+  gh.singleton<_i10.PostRepository>(_i10.PostRepositoryImpl(
+    get<_i9.PostRemote>(),
     get<_i3.AppDatabase>(),
   ));
-  gh.factory<_i10.CatRemote>(() => _i10.CatRemote(
+  gh.factory<_i11.CatRemote>(() => _i11.CatRemote(
         get<_i5.Dio>(instanceName: 'cat_dio'),
         baseUrl: get<String>(instanceName: 'cat_base_url'),
       ));
-  gh.factory<_i11.CatRepository>(() => _i11.CatRepositoryImpl(
-        get<_i10.CatRemote>(),
+  gh.factory<_i12.CatRepository>(() => _i12.CatRepositoryImpl(
+        get<_i11.CatRemote>(),
         get<_i3.AppDatabase>(),
       ));
-  gh.singleton<_i12.DioExampleModel1>(
-      _i12.DioExampleModel1(get<_i7.DioService>(instanceName: 'dio_1')));
-  gh.factory<_i13.MyController>(
-      () => _i13.MyController(get<_i9.PostRepository>()));
-  gh.factory<_i14.CatController>(
-      () => _i14.CatController(get<_i11.CatRepository>()));
+  gh.singleton<_i13.DioExampleModel1>(
+      _i13.DioExampleModel1(get<_i8.DioService>(instanceName: 'dio_1')));
+  gh.factory<_i14.PostController>(
+      () => _i14.PostController(get<_i10.PostRepository>()));
+  gh.factory<_i15.CatController>(
+      () => _i15.CatController(get<_i12.CatRepository>()));
   return get;
 }
 
-class _$DataModule extends _i15.DataModule {}
+class _$DataModule extends _i16.DataModule {}

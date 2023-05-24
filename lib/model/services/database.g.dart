@@ -149,7 +149,7 @@ class _$PostDao extends PostDao {
 
   @override
   Future<List<Post>> getAllPost() async {
-    return _queryAdapter.queryList('Select * From Post',
+    return _queryAdapter.queryList('select * From Post',
         mapper: (Map<String, Object?> row) => Post(
             userId: row['userId'] as int?,
             id: row['id'] as int?,
@@ -159,18 +159,12 @@ class _$PostDao extends PostDao {
 
   @override
   Future<Post?> getPostsById(int id) async {
-    return _queryAdapter.query('Select * From Post as p Where p.`id` = ?1',
+    return _queryAdapter.query('select * From Post as p Where p.`id` = ?1',
         mapper: (Map<String, Object?> row) => Post(
             userId: row['userId'] as int?,
             id: row['id'] as int?,
             title: row['title'] as String?,
             body: row['body'] as String?),
-        arguments: [id]);
-  }
-
-  @override
-  Future<void> deletePost(int id) async {
-    await _queryAdapter.queryNoReturn('delete from Post as p where p.`id` = ?1',
         arguments: [id]);
   }
 
@@ -187,8 +181,22 @@ class _$PostDao extends PostDao {
   }
 
   @override
-  Future<void> insertPost(Post post) async {
-    await _postInsertionAdapter.insert(post, OnConflictStrategy.ignore);
+  Future<int?> deletePostById(int id) async {
+    return _queryAdapter.query('delete from Post as p where p.`id` = ?1',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [id]);
+  }
+
+  @override
+  Future<int?> deletePosts() async {
+    return _queryAdapter.query('delete from Post',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<int> insertPost(Post post) {
+    return _postInsertionAdapter.insertAndReturnId(
+        post, OnConflictStrategy.ignore);
   }
 
   @override
@@ -197,8 +205,9 @@ class _$PostDao extends PostDao {
   }
 
   @override
-  Future<void> updatePost(Post post) async {
-    await _postUpdateAdapter.update(post, OnConflictStrategy.replace);
+  Future<int> updatePost(Post post) {
+    return _postUpdateAdapter.updateAndReturnChangedRows(
+        post, OnConflictStrategy.replace);
   }
 }
 
