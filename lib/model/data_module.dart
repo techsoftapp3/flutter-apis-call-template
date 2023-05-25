@@ -1,16 +1,32 @@
+// ignore_for_file: avoid_print
+
 import 'package:api_tools_test/model/services/database.dart';
 import 'package:api_tools_test/model/services/dio_services.dart';
 import 'package:api_tools_test/model/services/end_points.dart';
 import 'package:dio/dio.dart';
 import 'package:floor/floor.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 @module
 abstract class DataModule {
   @preResolve
   Future<AppDatabase> get logDatabase async {
-    int oldVersion = 1;
-    int newVersion = 2;
+    const String dbName = 'app_database.db';
+    final directory = await getApplicationDocumentsDirectory();
+    String dbPath = join(directory.path, dbName);
+    final callback = Callback(
+      onCreate: (database, version) {
+        print("Create database path: $dbPath");
+      },
+      onOpen: (database) {/* database has been opened */},
+      onUpgrade: (database, startVersion, endVersion) {
+        print("Database is updated from $startVersion to $endVersion");
+      },
+    );
+    int oldVersion = 2;
+    int newVersion = 3;
     List<Migration> list = <Migration>[
       Migration(oldVersion, newVersion, (database) {
         return database.execute(
@@ -85,8 +101,9 @@ abstract class DataModule {
       }),
     ];
     return $FloorAppDatabase
-        .databaseBuilder('app_database.db')
+        .databaseBuilder(dbName)
         .addMigrations(list)
+        .addCallback(callback)
         .build();
   }
 

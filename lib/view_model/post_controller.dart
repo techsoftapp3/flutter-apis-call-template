@@ -1,6 +1,7 @@
 import 'package:api_tools_test/core/config/injectable.dart';
 import 'package:api_tools_test/model/repositories/retrofit_repository.dart';
 import 'package:api_tools_test/model/entities/post_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 
@@ -66,5 +67,9 @@ class PostController extends GetxController {
 
   void insertListPosts() async {
     return postRepository.insertListPosts().then((value) => print("inserted"));
+  }
+
+  void getDBPath() async {
+    return postRepository.getDBPath().then((value) => debugPrint(value));
   }
 }

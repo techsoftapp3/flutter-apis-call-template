@@ -1,6 +1,7 @@
 import 'package:api_tools_test/core/config/injectable.dart';
 import 'package:api_tools_test/core/config/page_config.dart';
 import 'package:api_tools_test/model/entities/post_model.dart';
+import 'package:api_tools_test/model/services/database.dart';
 import 'package:api_tools_test/view_model/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

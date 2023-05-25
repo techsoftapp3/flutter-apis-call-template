@@ -10,14 +10,15 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 void main() {
-  final dio =
-      Dio(BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/"));
+  final dio = Dio(BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/"));
   late PostRemote remote;
   late AppDatabase local;
+
   setUp(() async {
     remote = PostRemote(dio);
     local = await $FloorAppDatabase.databaseBuilder("app_database.db").build();
   });
+
   tearDown(() {});
 
   group("Test Post APIs", () {

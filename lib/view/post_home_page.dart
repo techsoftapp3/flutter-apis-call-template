@@ -117,6 +117,13 @@ class PostPage extends GetView<PostController> {
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
+            TextButton(
+              onPressed: () async => controller.getDBPath(),
+              child: Text(
+                'get DB Path',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ),
           ],
         ),
       ),

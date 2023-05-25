@@ -13,6 +13,7 @@ abstract class PostRepository {
   Future<void> addListPost(List<Post> post);
   Future<int?> deletePosts();
   Future<void> insertListPosts();
+  Future<String> getDBPath();
 }
 
 @Singleton(as: PostRepository)
@@ -35,11 +36,11 @@ class PostRepositoryImpl implements PostRepository {
   @override
   Future<List<Post>> getPosts() async {
     final fromLocal = await local.postDao.getAllPost();
-    // if (fromLocal.isEmpty) {
-    //   final response = await remote.getPosts();
-    //   await local.postDao.insertListPosts(response);
-    //   return response;
-    // }
+    if (fromLocal.isEmpty) {
+      final response = await remote.getPosts();
+      await local.postDao.insertListPosts(response);
+      return response;
+    }
     return fromLocal;
   }
 
@@ -71,19 +72,23 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<int?> deletePostById(int id) async {
-    await remote.deletePost(id);
-    final response = await local.postDao.deletePostById(id);
-    return response ?? 0;
+    // await remote.deletePost(id);
+    // final response = await local.postDao.deletePostById(id);
+    // return response ?? 0;
+    //return local.database.rawDelete("delete from Post where `id` = ?", [id]);
+
+
+    return local.database.delete("Post", where: "id = ?", whereArgs: [id]);
   }
 
   @override
   Future<List<Post>> filterPostByUserId(int userId) async {
     final fromLocal = await local.postDao.getPostByUserId(userId);
-    // if (fromLocal.isEmpty) {
-    //   final response = await remote.filterByUserId(userId);
-    //   local.postDao.insertListPosts(response);
-    //   return response;
-    // }
+    if (fromLocal.isEmpty) {
+      final response = await remote.filterByUserId(userId);
+      local.postDao.insertListPosts(response);
+      return response;
+    }
     return fromLocal;
   }
 
@@ -93,6 +98,11 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   Future<int?> deletePosts() {
-    return local.postDao.deletePosts();
+    // return local.postDao.deletePosts();
+    return local.database.delete("Post");
+  }
+
+  Future<String> getDBPath() {
+    return local.databasePath;
   }
 }
